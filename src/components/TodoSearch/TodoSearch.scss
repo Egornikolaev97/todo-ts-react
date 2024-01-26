@@ -1,0 +1,21 @@
+.todo-search {
+    display: flex;
+    flex-direction: row;
+
+    &__input {
+        background-color: inherit;
+    }
+
+    &__btn {
+        background-color: transparent;
+        border: 1px solid #64b2ff;
+
+    }
+
+    &__icon {
+        background-color: inherit;
+        width: 30px;
+        height: 30px;
+        border: 1px solid #000;
+    }
+}
