@@ -33,6 +33,7 @@ const App: React.FC = () => {
       .toString()
       .padStart(2, '0')}.${(currentDate.getMonth() + 1)
       .toString()
+      // .padStart(2, '0')}.${currentDate.getFullYear().toString().slice(-2)}`;
       .padStart(2, '0')}.${currentDate.getFullYear()}`;
     const formattedTime = `${currentDate
       .getHours()
@@ -189,13 +190,15 @@ const App: React.FC = () => {
     <div className='todo-app'>
       <div className='todo-app__container'>
         <h1 className='todo-app__title'>Add a task!</h1>
-        <TodoSearch onSearch={handleSearch} />
+        {/* <TodoSearch onSearch={handleSearch} /> */}
         <div className='todo-app__add-task'>
           <button className='todo-app__add-btn' onClick={addTodo}>
             +
           </button>
           <input
             className='todo-app__add-input'
+            type='text'
+            maxLength={30}
             value={value}
             onChange={handleChange}
             onKeyDown={handleKeyDown}

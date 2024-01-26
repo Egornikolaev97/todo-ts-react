@@ -52,33 +52,60 @@ const TodoItem: React.FC<ITodoItem> = (props) => {
   }, [isEdit]);
 
   return (
-    <div>
-      {!isEdit ? (
-        <>
-          <input
-            type='checkbox'
-            checked={complete}
-            onChange={() => toggleTodo(id)}
-          />
-          {title}
-          <div className='todo-date-time'>
-            {date} {time}
-          </div>
-          <button onClick={() => removeTodo(id)}>x</button>
-          <button onClick={handleEdit}>Edit</button>
-        </>
-      ) : (
-        <>
-          <input
-            type='text'
-            value={editText}
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
-            ref={inputRef}
-          />
-          <button onClick={handleSaveEdit}>Save</button>
-        </>
-      )}
+
+      <div className='todo-item'>
+        {!isEdit ? (
+          <>
+            <input
+              className='todo-item__input'
+              type='checkbox'
+              checked={complete}
+              onChange={() => toggleTodo(id)}
+            />
+            <div className='todo-item__area'>
+              <p className='todo-item__title' onClick={handleEdit}>
+                {title}
+              </p>
+              <div>
+                <span className='todo-item__time'>{date}</span>
+                <span className='todo-item__time'>{time}</span>
+              </div>
+            </div>
+            {/* <div className='todo-item__btn-container'> */}
+            {/* <button className='todo-item__btn' onClick={handleEdit}>
+            edit
+            </button> */}
+            <button
+              className='todo-item__btn-delete'
+              onClick={() => removeTodo(id)}
+            >
+              <div className='todo-item__delete-icon'>x</div>
+            </button>
+            {/* </div> */}
+          </>
+        ) : (
+          <>
+            <input
+              className='todo-item__input'
+              type='checkbox'
+              checked={complete}
+              onChange={() => toggleTodo(id)}
+            />
+            <input
+              className='todo-item__input-edit'
+              type='text'
+              maxLength={30}
+              value={editText}
+              onChange={handleChange}
+              onKeyDown={handleKeyDown}
+              ref={inputRef}
+            />
+            <div className='todo-item__btn-container'>
+              <button onClick={handleSaveEdit}>Save</button>
+              <button onClick={() => setIsEdit(false)}>Cancel</button>
+            </div>
+          </>
+        )}
     </div>
   );
 };
