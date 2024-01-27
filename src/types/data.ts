@@ -18,4 +18,5 @@ export interface TodoSortProps {
     showAllTodos: () => void;
     showCompletedTodos: () => void;
     removeCompletedTodos: () => void;
+    handleRemoveAllTodos: () => void;
 }

@@ -10,6 +10,7 @@ const TodoSort: React.FC<TodoSortProps> = (props) => {
     showAllTodos,
     showCompletedTodos,
     removeCompletedTodos,
+    handleRemoveAllTodos,
   } = props;
 
   return (
@@ -22,6 +23,7 @@ const TodoSort: React.FC<TodoSortProps> = (props) => {
         <button className="todo-sort__btn" onClick={showAllTodos}>all</button>
         <button className="todo-sort__btn" onClick={showCompletedTodos}>completed</button>
         <button className="todo-sort__btn" onClick={removeCompletedTodos}>Remove Completed Tasks</button>
+        <button className="todo-sort__btn" onClick={handleRemoveAllTodos}>Clear all</button>
     </div>
   )
 };

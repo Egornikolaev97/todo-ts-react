@@ -1,4 +1,8 @@
 .todo-sort {
+    padding: 10px;
+    color: #00000053;
+    margin: 0 auto;
+    // opacity: 70%;
     &__btn {
         background-color: transparent;
         border: 1px solid #64b2ff;
@@ -7,5 +11,9 @@
         padding: 5px;
         margin: 5px;
         cursor: pointer;
+        transition: opacity .2s linear;
+        &:hover {
+            opacity: .7;
+        }
     }
 }

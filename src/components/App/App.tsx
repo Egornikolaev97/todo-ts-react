@@ -33,7 +33,6 @@ const App: React.FC = () => {
       .toString()
       .padStart(2, '0')}.${(currentDate.getMonth() + 1)
       .toString()
-      // .padStart(2, '0')}.${currentDate.getFullYear().toString().slice(-2)}`;
       .padStart(2, '0')}.${currentDate.getFullYear()}`;
     const formattedTime = `${currentDate
       .getHours()
@@ -172,6 +171,11 @@ const App: React.FC = () => {
     setFilteredTodos(filteredTodos);
   };
 
+  const handleRemoveAllTodos = () => {
+    setTodos([]);
+    setFilteredTodos([]);
+  };
+
   // Editing todo
   const editTodo = (id: number, newText: string) => {
     setTodos((prevTodos) =>
@@ -214,6 +218,7 @@ const App: React.FC = () => {
             showAllTodos={showAllTodos}
             showCompletedTodos={showCompletedTodos}
             removeCompletedTodos={removeCompletedTodos}
+            handleRemoveAllTodos={handleRemoveAllTodos}
           />
         </div>
         <TodoList
