@@ -1,0 +1,28 @@
+.todo-options {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 50px;
+  align-items: center;
+
+  &__btn {
+    height: 30px;
+    padding: 7px;
+    text-align: center;
+    background: transparent;
+    border-radius: 5px;
+    border: 1px solid #f2f3f4;
+    cursor: pointer;
+    transition: background-color border 0.2s linear;
+
+    &:hover {
+    //   border: 1px solid #64b2ff;
+      background-color: #f2f3f4;
+    }
+
+    &_active {
+      // background-color: #95c3f035;
+      border: 1px solid #64b2ff;
+    }
+  }
+}

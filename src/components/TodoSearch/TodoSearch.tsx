@@ -1,6 +1,6 @@
 import { TodoSearchProps } from '../../types/data';
 import { useState } from 'react';
-import './TodoSearch.scss'
+import './TodoSearch.scss';
 
 const TodoSearch: React.FC<TodoSearchProps> = (props) => {
   const { onSearch } = props;
@@ -13,8 +13,9 @@ const TodoSearch: React.FC<TodoSearchProps> = (props) => {
 
   return (
     <div className='todo-search'>
-      <div className='todo-search__icon'></div>
-      <input className='todo-search__input'
+      <button className='todo-search__btn'></button>
+      <input
+        className='todo-search__input'
         type='text'
         placeholder='Search'
         value={query}

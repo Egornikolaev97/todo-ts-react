@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { TodoList } from '../TodoList/TodoList';
 import { TodoSearch } from '../TodoSearch/TodoSearch';
 import { TodoSort } from '../TodoSort/TodoSort';
+import { TodoOptions } from '../TodoOptions/TodoOptions';
 import { ITodo } from '../../types/data';
 import './App.scss';
 
@@ -10,6 +11,8 @@ const App: React.FC = () => {
   const [todos, setTodos] = useState<ITodo[]>([]);
   const [filteredTodos, setFilteredTodos] = useState<ITodo[]>([]);
   const [showCompletedOnly, setShowCompletedOnly] = useState(false);
+  const [showSortMenu, setShowSortMenu] = useState(false);
+  const [activeSort, setActiveSort] = useState('');
 
   // Handle input change for the new todo:
   // Updates the state with the current value of the input field
@@ -55,6 +58,7 @@ const App: React.FC = () => {
     } else {
       setFilteredTodos(sorted.filter((todo) => todo.complete));
     }
+    setActiveSort('name-ascending');
   };
 
   //Sorting by Name(descending)
@@ -68,6 +72,7 @@ const App: React.FC = () => {
     } else {
       setFilteredTodos(sorted.filter((todo) => todo.complete));
     }
+    setActiveSort('name-descending');
   };
 
   //Sorting by Time(default)
@@ -79,6 +84,7 @@ const App: React.FC = () => {
     } else {
       setFilteredTodos(sorted.filter((todo) => todo.complete));
     }
+    setActiveSort('time-ascending');
   };
 
   //Sorting by Time(descending)
@@ -90,12 +96,14 @@ const App: React.FC = () => {
     } else {
       setFilteredTodos(sorted.filter((todo) => todo.complete));
     }
+    setActiveSort('time-descending');
   };
 
   // Showing all todos
   const showAllTodos = () => {
     setFilteredTodos([...todos]);
     setShowCompletedOnly(false);
+    setActiveSort('show-all');
   };
 
   // Showing only completed todos
@@ -103,6 +111,7 @@ const App: React.FC = () => {
     const completed = todos.filter((todo) => todo.complete);
     setFilteredTodos(completed);
     setShowCompletedOnly(true);
+    setActiveSort('show-completed');
   };
 
   // Adding todo
@@ -139,6 +148,7 @@ const App: React.FC = () => {
   const removeCompletedTodos = () => {
     setTodos(todos.filter((todo) => !todo.complete));
     setFilteredTodos(filteredTodos.filter((todo) => !todo.complete));
+    setActiveSort('remove-completed');
   };
 
   // Toggling todo (make task as completed)
@@ -174,6 +184,7 @@ const App: React.FC = () => {
   const handleRemoveAllTodos = () => {
     setTodos([]);
     setFilteredTodos([]);
+    setActiveSort('remove-all');
   };
 
   // Editing todo
@@ -190,11 +201,34 @@ const App: React.FC = () => {
     );
   };
 
+  const handleClickSort = () => {
+    setShowSortMenu(!showSortMenu);
+  };
+
+  const handleCloseMenu = () => {
+    if (showSortMenu) setShowSortMenu(false);
+  };
+
   return (
-    <div className='todo-app'>
+    <div className='todo-app' onClick={handleCloseMenu}>
       <div className='todo-app__container'>
-        <h1 className='todo-app__title'>Add a task!</h1>
-        {/* <TodoSearch onSearch={handleSearch} /> */}
+        <div className='todo-app__toolbar'>
+          <h1 className='todo-app__title'>Todo-list</h1>
+          <TodoSearch onSearch={handleSearch} />
+          <button className='todo-app__sort-btn' onClick={handleClickSort}>
+            <div className='todo-app__sort-icon'></div>
+          </button>
+          {showSortMenu && (
+            <TodoSort
+              handleCloseMenu={handleCloseMenu}
+              sortTodosByName={sortTodosByName}
+              sortTodosByNameDescending={sortTodosByNameDescending}
+              sortTodosByTime={sortTodosByTime}
+              sortTodosByTimeDescending={sortTodosByTimeDescending}
+              activeSort={activeSort}
+            />
+          )}
+        </div>
         <div className='todo-app__add-task'>
           <button className='todo-app__add-btn' onClick={addTodo}>
             +
@@ -209,18 +243,13 @@ const App: React.FC = () => {
             placeholder='Add task!'
           />
         </div>
-        <div className='todo-sort'>
-          <TodoSort
-            sortTodosByName={sortTodosByName}
-            sortTodosByNameDescending={sortTodosByNameDescending}
-            sortTodosByTime={sortTodosByTime}
-            sortTodosByTimeDescending={sortTodosByTimeDescending}
-            showAllTodos={showAllTodos}
-            showCompletedTodos={showCompletedTodos}
-            removeCompletedTodos={removeCompletedTodos}
-            handleRemoveAllTodos={handleRemoveAllTodos}
-          />
-        </div>
+        <TodoOptions
+          showAllTodos={showAllTodos}
+          showCompletedTodos={showCompletedTodos}
+          removeCompletedTodos={removeCompletedTodos}
+          handleRemoveAllTodos={handleRemoveAllTodos}
+          activeSort={activeSort}
+        />
         <TodoList
           items={filteredTodos.length ? filteredTodos : todos}
           removeTodo={removeTodo}

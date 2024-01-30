@@ -15,8 +15,14 @@ export interface TodoSortProps {
     sortTodosByNameDescending: () => void;
     sortTodosByTime: () => void;
     sortTodosByTimeDescending: () => void;
+    handleCloseMenu: () => void;
+    activeSort: string;
+}
+
+export interface TodoOptionProps {
     showAllTodos: () => void;
     showCompletedTodos: () => void;
     removeCompletedTodos: () => void;
     handleRemoveAllTodos: () => void;
+    activeSort: string;
 }

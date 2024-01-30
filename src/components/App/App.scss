@@ -14,22 +14,64 @@ body {
 }
 
 .todo-app {
-  background-color: #fff;
+  background-color: #f2f3f4;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   padding: 50px 100px;
   margin: 0 auto;
+
+  &__sort-btn {
+    width: 35px;
+    height: 35px;
+    border: none;
+    background-color: #000204;
+    background-color: #f2f3f4;
+    cursor: pointer;
+    border-radius: 5px;
+    // transition:  .2s linear;
+    // &:hover {
+
+    // }
+  }
+
+  &__sort-icon {
+    background-image: url('../../images/sort-icon.svg');
+    background-size: 15px 15px;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 35px;
+    height: 35px;
+    opacity: 50%;
+    transition: opacity .2s linear;
+    &:hover {
+        opacity: 20%;
+    }
+  }
+
+  &__toolbar {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    height: 50px;
+    position: relative;
+  }
 
   &__container {
     width: 500px;
     padding: 50px;
     margin: 0 auto;
     border-radius: 10px;
+    background-color: #fff;
   }
 
   &__title {
-    font-weight: 500;
+    font-weight: 700;
     font-size: 28px;
+    color: #64b2ff;
+    margin-right: 10px;
   }
 
   &__add-task {
@@ -48,13 +90,18 @@ body {
     background-size: 15px 15px;
     background-repeat: no-repeat;
     width: 20px;
-    height: 20px;
+    height: 50px;
     background-color: transparent;
     border: none;
     cursor: pointer;
     position: absolute;
     left: 5px;
-    opacity: 30%;
+    opacity: 40%;
+    transition: opacity .2s linear;
+
+    &:hover {
+        opacity: 20%;
+    }
   }
 
   &__add-input {

@@ -1,19 +1,76 @@
 .todo-sort {
-    padding: 10px;
-    color: #00000053;
-    margin: 0 auto;
-    // opacity: 70%;
-    &__btn {
-        background-color: transparent;
-        border: 1px solid #64b2ff;
-        border-radius: 5px;
-        box-sizing: border-box;
-        padding: 5px;
-        margin: 5px;
-        cursor: pointer;
-        transition: opacity .2s linear;
-        &:hover {
-            opacity: .7;
-        }
+  width: 120px;
+  background-color: #fff;
+  padding: 15px;
+  box-sizing: border-box;
+  position: absolute;
+  right: 20px;
+  top: 50px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 20px 2px rgba(0, 0, 0, 0.14);
+
+  &__btn {
+    border: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: transparent;
+    cursor: pointer;
+    text-align: left;
+    border-radius: 5px;
+    padding: 10px 5px 10px 10px;
+    height: 30px;
+    align-items: center;
+
+    &:hover {
+      background-color: #f2f3f4;
     }
+
+    &_active {
+        color: #64b2ff;
+    }
+  }
+
+  &__icon {
+    &_name-ascending {
+      background-image: url('../../images/sort-up.svg');
+      background-repeat: no-repeat;
+      background-size: 20px 20px;
+      width: 25px;
+      height: 25px;
+      margin-left: 10px;
+      opacity: 50%;
+    }
+    &_name-descending {
+      background-image: url('../../images/sort-down.svg');
+      background-repeat: no-repeat;
+      background-size: 20px 20px;
+      width: 25px;
+      height: 25px;
+      opacity: 50%;
+      margin-left: 10px;
+    }
+    &_time-ascending {
+      background-image: url('../../images/sort-up-time.svg');
+      background-repeat: no-repeat;
+      background-size: 20px 20px;
+      width: 25px;
+      height: 25px;
+      margin-left: 10px;
+      opacity: 70%;
+    }
+    &_time-descending {
+      background-image: url('../../images/sort-down-time.svg');
+      background-repeat: no-repeat;
+      background-size: 20px 20px;
+      width: 25px;
+      height: 25px;
+      margin-left: 10px;
+      opacity: 70%;
+    }
+  }
 }

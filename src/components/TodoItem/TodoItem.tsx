@@ -47,11 +47,11 @@ const TodoItem: React.FC<ITodoItem> = (props) => {
 
   // Cancel editing mode when a click occurs outside the todo-item
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (e: MouseEvent) => {
       if (
         isEdit &&
         todoItemRef.current &&
-        !todoItemRef.current.contains(event.target as Node)
+        !todoItemRef.current.contains(e.target as Node)
       ) {
         setIsEdit(false);
       }
@@ -99,7 +99,7 @@ const TodoItem: React.FC<ITodoItem> = (props) => {
             className='todo-item__btn-delete'
             onClick={() => removeTodo(id)}
           >
-            <div className='todo-item__delete-icon'></div>
+            <div className='todo-item__delete-icon' aria-label='delete'></div>
           </button>
         </>
       ) : (
@@ -120,8 +120,14 @@ const TodoItem: React.FC<ITodoItem> = (props) => {
             ref={inputRef}
           />
           <div className='todo-item__btn-container'>
-            <button className='todo-item__save-btn' onClick={handleSaveEdit}></button>
-            <button className='todo-item__cancel-btn' onClick={() => setIsEdit(false)}></button>
+            <button
+              className='todo-item__save-btn'
+              onClick={handleSaveEdit}
+            ></button>
+            <button
+              className='todo-item__cancel-btn'
+              onClick={() => setIsEdit(false)}
+            ></button>
           </div>
         </>
       )}
