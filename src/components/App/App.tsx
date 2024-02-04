@@ -103,7 +103,9 @@ const App: React.FC = () => {
   const showAllTodos = () => {
     setFilteredTodos([...todos]);
     setShowCompletedOnly(false);
-    setActiveSort('show-all');
+    todos.length !== 0
+      ? setActiveSort('show-all')
+      : setActiveSort('todo-options__btn');
   };
 
   // Showing only completed todos
@@ -111,7 +113,9 @@ const App: React.FC = () => {
     const completed = todos.filter((todo) => todo.complete);
     setFilteredTodos(completed);
     setShowCompletedOnly(true);
-    setActiveSort('show-completed');
+    completed.length !== 0
+      ? setActiveSort('show-completed')
+      : setActiveSort('todo-options__btn');
   };
 
   // Adding todo
@@ -148,7 +152,7 @@ const App: React.FC = () => {
   const removeCompletedTodos = () => {
     setTodos(todos.filter((todo) => !todo.complete));
     setFilteredTodos(filteredTodos.filter((todo) => !todo.complete));
-    setActiveSort('remove-completed');
+    setActiveSort('todo-options__btn');
   };
 
   // Toggling todo (make task as completed)
@@ -184,7 +188,7 @@ const App: React.FC = () => {
   const handleRemoveAllTodos = () => {
     setTodos([]);
     setFilteredTodos([]);
-    setActiveSort('remove-all');
+    setActiveSort('todo-options__btn');
   };
 
   // Editing todo

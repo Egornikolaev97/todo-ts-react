@@ -16,12 +16,10 @@
     transition: background-color border 0.2s linear;
 
     &:hover {
-    //   border: 1px solid #64b2ff;
       background-color: #f2f3f4;
     }
 
     &_active {
-      // background-color: #95c3f035;
       border: 1px solid #64b2ff;
     }
   }
