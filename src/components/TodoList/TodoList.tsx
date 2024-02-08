@@ -1,5 +1,6 @@
 import { TodoItem } from '../TodoItem/TodoItem';
 import { ITodo } from '../../types/data';
+import './TodoList.scss'
 
 interface ITodoListProps {
   items: ITodo[];

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { ITodo } from '../../types/data';
+import './TodoItem.scss'
 
 interface ITodoItem extends ITodo {
   removeTodo: (id: number) => void;

@@ -1,9 +1,11 @@
+@import '../../styles/variables';
+
 .todo-search {
   display: flex;
   flex-grow: 1;
   height: 35px;
   width: 150px;
-  border-radius: 5px;
+  border-radius: $border-radius-base;
   align-items: center;
   margin: 15px 0;
   position: relative;
@@ -23,7 +25,7 @@
     position: absolute;
     left: 5px;
     opacity: 40%;
-    transition: opacity 0.2s linear;
+    transition: $transition-base;
 
     &:hover {
       opacity: 20%;
@@ -35,10 +37,10 @@
     font-size: 16px;
     color: rgba(0, 0, 0, 0.5);
     width: 100%;
-    border-radius: 5px;
+    border-radius: $border-radius-base;
     border: none;
     height: 100%;
-    background-color: #f2f3f4;
+    background-color: $background-color;
     padding: 5px 5px 3px 30px;
 
     &::placeholder {
@@ -47,7 +49,7 @@
     }
 
     &:focus {
-      outline: 1px solid #64b2ff;
+      outline: 1px solid $primary-color;
       background-color: #fff;
 
       &::placeholder {

@@ -1,3 +1,5 @@
+@import '../../styles/variables';
+
 .todo-sort {
   width: 120px;
   background-color: #fff;
@@ -10,7 +12,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  border-radius: 5px;
+  border-radius: $border-radius-base;
   box-shadow: 1px 1px 20px 2px rgba(0, 0, 0, 0.14);
 
   &__btn {
@@ -21,17 +23,17 @@
     background-color: transparent;
     cursor: pointer;
     text-align: left;
-    border-radius: 5px;
+    border-radius: $border-radius-base;
     padding: 10px 5px 10px 10px;
     height: 30px;
     align-items: center;
 
     &:hover {
-      background-color: #f2f3f4;
+      background-color: $background-color;
     }
 
     &_active {
-        color: #64b2ff;
+        color: $primary-color;
     }
   }
 
