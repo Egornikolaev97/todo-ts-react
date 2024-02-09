@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TodoList } from '../TodoList/TodoList';
 import { TodoSearch } from '../TodoSearch/TodoSearch';
 import { TodoSort } from '../TodoSort/TodoSort';
@@ -8,12 +8,14 @@ import './App.scss';
 
 const App: React.FC = () => {
   const [value, setValue] = useState('');
-  const [todos, setTodos] = useState<ITodo[]>([]);
   const [filteredTodos, setFilteredTodos] = useState<ITodo[]>([]);
   const [showCompletedOnly, setShowCompletedOnly] = useState(false);
   const [showSortMenu, setShowSortMenu] = useState(false);
   const [activeSort, setActiveSort] = useState('');
-
+  const [todos, setTodos] = useState<ITodo[]>(() => {
+    const savedTodos = localStorage.getItem('todos');
+    return savedTodos ? JSON.parse(savedTodos) : [];
+  });
   // Handle input change for the new todo:
   // Updates the state with the current value of the input field
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -26,6 +28,11 @@ const App: React.FC = () => {
       addTodo();
     }
   };
+
+  useEffect(() => {
+    const savedTodos = JSON.stringify(todos);
+    localStorage.setItem('todos', savedTodos);
+  }, [todos]);
 
   // Formatting date and time according to Russian standards
   // DD.MM.YYYY HH:MM
