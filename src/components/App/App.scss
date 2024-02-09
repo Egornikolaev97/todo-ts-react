@@ -47,9 +47,9 @@ body {
   &__toolbar {
     display: flex;
     flex-direction: row;
-    width: 100%;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
     margin: 0;
     height: 50px;
     position: relative;
@@ -73,10 +73,10 @@ body {
 
   &__add-task {
     display: flex;
+    align-items: center;
     height: 35px;
     width: 100%;
     border-radius: $border-radius-base;
-    align-items: center;
     margin: 15px 0;
     position: relative;
   }
