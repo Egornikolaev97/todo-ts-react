@@ -4,8 +4,8 @@ import './TodoItem.scss'
 
 interface ITodoItem extends ITodo {
   removeTodo: (id: number) => void;
-  toggleTodo: (id: number) => void;
   editTodo: (id: number, newText: string) => void;
+  toggleTodo: (id: number) => void;
 }
 
 const TodoItem: React.FC<ITodoItem> = (props) => {

@@ -3,213 +3,130 @@ import { TodoList } from '../TodoList/TodoList';
 import { TodoSearch } from '../TodoSearch/TodoSearch';
 import { TodoSort } from '../TodoSort/TodoSort';
 import { TodoOptions } from '../TodoOptions/TodoOptions';
-import { ITodo } from '../../types/data';
+import { ITodo, TodosState } from '../../types/data';
+import { formatDateTime } from '../../configs/formatDateTime';
+import { useSelector, useDispatch } from 'react-redux';
+import { Dispatch } from 'redux';
+import { RootState } from '../../redux/store'
+import {
+  addTodo,
+  removeTodo,
+  editTodo,
+  toggleTodo,
+} from '../../redux/actions/todoActions';
+import {
+  showAllTodos,
+  showCompletedTodos,
+  removeAllTodos,
+  removeCompletedTodos,
+  sortByNamesAscending,
+  sortByNameDescending,
+  sortByTimeAscending,
+  sortByTimeDescending,
+} from '../../redux/actions/sortActions';
 import './App.scss';
+import { TodoActionTypes } from '../../types/actionTypes';
 
 const App: React.FC = () => {
-  const [value, setValue] = useState('');
-  const [filteredTodos, setFilteredTodos] = useState<ITodo[]>([]);
-  const [showCompletedOnly, setShowCompletedOnly] = useState(false);
+  const dispatch: Dispatch<TodoActionTypes> = useDispatch();
+
+  const todos = useSelector((state: { todos: TodosState }) => state.todos.todos);
+  const filter = useSelector((state: RootState) => state.todos.filter);
+
   const [showSortMenu, setShowSortMenu] = useState(false);
   const [activeSort, setActiveSort] = useState('');
-  const [todos, setTodos] = useState<ITodo[]>(() => {
-    const savedTodos = localStorage.getItem('todos');
-    return savedTodos ? JSON.parse(savedTodos) : [];
-  });
-  // Handle input change for the new todo:
-  // Updates the state with the current value of the input field
-  const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    setValue(e.target.value);
-  };
+  const [activeOptions, setActiveOptions] = useState('show-all');
+  const [value, setValue] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
 
-  // Handle key down event in the input field: Adds a new todo when the 'Enter' key is pressed
-  const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
-    if (e.key === 'Enter') {
-      addTodo();
-    }
-  };
-
-  useEffect(() => {
-    const savedTodos = JSON.stringify(todos);
-    localStorage.setItem('todos', savedTodos);
-  }, [todos]);
-
-  // Formatting date and time according to Russian standards
-  // DD.MM.YYYY HH:MM
-  const formatDateTime = () => {
-    const currentDate = new Date();
-    const formattedDate = `${currentDate
-      .getDate()
-      .toString()
-      .padStart(2, '0')}.${(currentDate.getMonth() + 1)
-      .toString()
-      .padStart(2, '0')}.${currentDate.getFullYear()}`;
-    const formattedTime = `${currentDate
-      .getHours()
-      .toString()
-      .padStart(2, '0')}:${currentDate
-      .getMinutes()
-      .toString()
-      .padStart(2, '0')}`;
-    return { date: formattedDate, time: formattedTime };
-  };
-
-  //Sorting by Name
-  const sortTodosByName = () => {
-    const sorted = [...todos].sort((a, b) => {
-      return a.title.toLowerCase().localeCompare(b.title.toLowerCase());
-    });
-    setTodos(sorted);
-    if (!showCompletedOnly) {
-      setFilteredTodos(sorted);
-    } else {
-      setFilteredTodos(sorted.filter((todo) => todo.complete));
-    }
-    setActiveSort('name-ascending');
-  };
-
-  //Sorting by Name(descending)
-  const sortTodosByNameDescending = () => {
-    const sorted = [...todos].sort((a, b) => {
-      return b.title.toLowerCase().localeCompare(a.title.toLowerCase());
-    });
-    setTodos(sorted);
-    if (!showCompletedOnly) {
-      setFilteredTodos(sorted);
-    } else {
-      setFilteredTodos(sorted.filter((todo) => todo.complete));
-    }
-    setActiveSort('name-descending');
-  };
-
-  //Sorting by Time(default)
-  const sortTodosByTime = () => {
-    const sorted = [...todos].sort((a, b) => a.id - b.id);
-    setTodos(sorted);
-    if (!showCompletedOnly) {
-      setFilteredTodos(sorted);
-    } else {
-      setFilteredTodos(sorted.filter((todo) => todo.complete));
-    }
-    setActiveSort('time-ascending');
-  };
-
-  //Sorting by Time(descending)
-  const sortTodosByTimeDescending = () => {
-    const sorted = [...todos].sort((a, b) => b.id - a.id);
-    setTodos(sorted);
-    if (!showCompletedOnly) {
-      setFilteredTodos(sorted);
-    } else {
-      setFilteredTodos(sorted.filter((todo) => todo.complete));
-    }
-    setActiveSort('time-descending');
-  };
-
-  // Showing all todos
-  const showAllTodos = () => {
-    setFilteredTodos([...todos]);
-    setShowCompletedOnly(false);
-    todos.length !== 0
-      ? setActiveSort('show-all')
-      : setActiveSort('todo-options__btn');
-  };
-
-  // Showing only completed todos
-  const showCompletedTodos = () => {
-    const completed = todos.filter((todo) => todo.complete);
-    setFilteredTodos(completed);
-    setShowCompletedOnly(true);
-    completed.length !== 0
-      ? setActiveSort('show-completed')
-      : setActiveSort('todo-options__btn');
-  };
-
-  // Adding todo
-  const addTodo = () => {
-    if (value) {
+  const handleAddTodo = () => {
+    if (value.trim()) {
       const { date, time } = formatDateTime();
-      const newTodo = {
+      const newTodo: ITodo = {
         id: Date.now(),
         title: value,
         complete: false,
         date,
         time,
       };
-      setTodos((prevTodos) => [newTodo, ...prevTodos]);
-      if (filteredTodos.length > 0) {
-        setFilteredTodos((prevFilteredTodos) => [
-          newTodo,
-          ...prevFilteredTodos,
-        ]);
-      }
+      dispatch(addTodo(newTodo));
+      handleShowAll();
       setValue('');
     }
   };
 
-  // Removing todo
-  const removeTodo = (id: number): void => {
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
-    setFilteredTodos((prevFilteredTodos) =>
-      prevFilteredTodos.filter((todo) => todo.id !== id)
-    );
+  const handleSearchChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    setSearchQuery(e.target.value);
   };
 
-  // Removing only completed totos
-  const removeCompletedTodos = () => {
-    setTodos(todos.filter((todo) => !todo.complete));
-    setFilteredTodos(filteredTodos.filter((todo) => !todo.complete));
-    setActiveSort('todo-options__btn');
+  const filteredAndSortedTodos = todos.filter(todo => {
+    const matchesFilter = filter === 'all' || (filter === 'completed' ? todo.complete : !todo.complete);
+    return matchesFilter && todo.title.toLowerCase().includes(searchQuery.toLowerCase());
+  });
+
+  // const filteredAndSortedTodos = todos.filter(todo => {
+  //   if (filter === 'all') return true;
+  //   return filter === 'completed' ? todo.complete : !todo.complete;
+  // });
+
+  const handleToggleTodo = (id: number) => {
+    dispatch(toggleTodo(id));
   };
 
-  // Toggling todo (make task as completed)
-  const toggleTodo = (id: number): void => {
-    setTodos((prevTodos) =>
-      prevTodos.map((todo) => {
-        if (todo.id !== id) return todo;
-        return {
-          ...todo,
-          complete: !todo.complete,
-        };
-      })
-    );
-    setFilteredTodos((prevFilteredTodos) =>
-      prevFilteredTodos.map((todo) => {
-        if (todo.id !== id) return todo;
-        return {
-          ...todo,
-          complete: !todo.complete,
-        };
-      })
-    );
+  const handleRemoveTodo = (id: number) => {
+    dispatch(removeTodo(id));
   };
 
-  // Searching todos (dynamic searching)
-  const handleSearch = (query: string) => {
-    const filteredTodos = todos.filter((todo) =>
-      todo.title.toLowerCase().includes(query.toLowerCase())
-    );
-    setFilteredTodos(filteredTodos);
+  const hadleEditTodo = (id: number, newText: string) => {
+    dispatch(editTodo(id, newText));
+  };
+
+  const handleShowAll = () => {
+    dispatch(showAllTodos());
+    setActiveOptions('show-all')
+  };
+
+  const handleShowCompleted = () => {
+    dispatch(showCompletedTodos());
+    setActiveOptions('show-completed')
   };
 
   const handleRemoveAllTodos = () => {
-    setTodos([]);
-    setFilteredTodos([]);
-    setActiveSort('todo-options__btn');
+    dispatch(removeAllTodos());
   };
 
-  // Editing todo
-  const editTodo = (id: number, newText: string) => {
-    setTodos((prevTodos) =>
-      prevTodos.map((todo) =>
-        todo.id === id ? { ...todo, title: newText } : todo
-      )
-    );
-    setFilteredTodos((prevFilteredTodos) =>
-      prevFilteredTodos.map((todo) =>
-        todo.id === id ? { ...todo, title: newText } : todo
-      )
-    );
+  const handleRemoveCompletedTodos = () => {
+    dispatch(removeCompletedTodos());
+  };
+
+  const handleSortByNameAscendign = () => {
+    dispatch(sortByNamesAscending());
+    setActiveSort('name-asc')
+  }
+
+  const handleSortByNameDescending = () => {
+    dispatch(sortByNameDescending());
+    setActiveSort('name-desc')
+  };
+
+  const handleSortByTimeAscendign = () => {
+    dispatch(sortByTimeAscending());
+    setActiveSort('time-asc')
+  }
+
+  const handleSortByTimeDescending = () => {
+    dispatch(sortByTimeDescending());
+    setActiveSort('time-desc')
+  };
+
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    setValue(e.target.value);
+  };
+
+  const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
+    if (e.key === 'Enter') {
+      handleAddTodo();
+    }
   };
 
   const handleClickSort = () => {
@@ -225,23 +142,27 @@ const App: React.FC = () => {
       <div className='todo-app__container'>
         <div className='todo-app__toolbar'>
           <h1 className='todo-app__title'>Todo-list</h1>
-          <TodoSearch onSearch={handleSearch} />
+          <TodoSearch onChange={handleSearchChange} value={searchQuery}
+          />
           <button className='todo-app__sort-btn' onClick={handleClickSort}>
             <div className='todo-app__sort-icon'></div>
           </button>
           {showSortMenu && (
             <TodoSort
               handleCloseMenu={handleCloseMenu}
-              sortTodosByName={sortTodosByName}
-              sortTodosByNameDescending={sortTodosByNameDescending}
-              sortTodosByTime={sortTodosByTime}
-              sortTodosByTimeDescending={sortTodosByTimeDescending}
+              sortByNameAscending={handleSortByNameAscendign}
+              sortByNameDescending={handleSortByNameDescending}
+              sortByTimeAscending={handleSortByTimeAscendign}
+              sortByTimeDescending={handleSortByTimeDescending}
               activeSort={activeSort}
             />
           )}
         </div>
-        <div className='todo-app__add-task'>
-          <button className='todo-app__add-btn' onClick={addTodo}>
+        <div className='todo-app__add-task' onKeyDown={handleKeyDown}>
+          <button
+            className='todo-app__add-btn'
+            onClick={handleAddTodo}
+          >
             +
           </button>
           <input
@@ -250,22 +171,21 @@ const App: React.FC = () => {
             maxLength={30}
             value={value}
             onChange={handleChange}
-            onKeyDown={handleKeyDown}
             placeholder='Add task!'
           />
         </div>
         <TodoOptions
-          showAllTodos={showAllTodos}
-          showCompletedTodos={showCompletedTodos}
-          removeCompletedTodos={removeCompletedTodos}
-          handleRemoveAllTodos={handleRemoveAllTodos}
-          activeSort={activeSort}
+          showAllTodos={handleShowAll}
+          showCompletedTodos={handleShowCompleted}
+          removeCompletedTodos={handleRemoveCompletedTodos}
+          removeAllTodos={handleRemoveAllTodos}
+          activeOptions={activeOptions}
         />
         <TodoList
-          items={filteredTodos.length ? filteredTodos : todos}
-          removeTodo={removeTodo}
-          toggleTodo={toggleTodo}
-          editTodo={editTodo}
+          items={filteredAndSortedTodos}
+          removeTodo={handleRemoveTodo}
+          editTodo={hadleEditTodo}
+          toggleTodo={handleToggleTodo}
         />
       </div>
     </div>

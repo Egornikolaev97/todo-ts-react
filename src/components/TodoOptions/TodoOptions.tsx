@@ -6,15 +6,15 @@ const TodoOptions: React.FC<TodoOptionProps> = (props) => {
     showAllTodos,
     showCompletedTodos,
     removeCompletedTodos,
-    handleRemoveAllTodos,
-    activeSort,
+    removeAllTodos,
+    activeOptions,
   } = props;
 
   return (
     <div className='todo-options'>
       <button
         className={`todo-options__btn ${
-          activeSort === 'show-all' ? 'todo-options__btn_active' : ''
+          activeOptions === 'show-all' ? 'todo-options__btn_active' : ''
         }`}
         onClick={showAllTodos}
       >
@@ -22,7 +22,7 @@ const TodoOptions: React.FC<TodoOptionProps> = (props) => {
       </button>
       <button
         className={`todo-options__btn ${
-          activeSort === 'show-completed' ? 'todo-options__btn_active' : ''
+          activeOptions === 'show-completed' ? 'todo-options__btn_active' : ''
         }`}
         onClick={showCompletedTodos}
       >
@@ -31,7 +31,7 @@ const TodoOptions: React.FC<TodoOptionProps> = (props) => {
       <button className='todo-options__btn' onClick={removeCompletedTodos}>
         clear Completed
       </button>
-      <button className='todo-options__btn' onClick={handleRemoveAllTodos}>
+      <button className='todo-options__btn' onClick={removeAllTodos}>
         Clear all
       </button>
     </div>

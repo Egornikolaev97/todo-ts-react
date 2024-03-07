@@ -1,28 +1,33 @@
 export interface ITodo {
-    id: number;
-    title: string;
-    complete: boolean;
-    date: string;
-    time: string;
+  id: number;
+  title: string;
+  complete: boolean;
+  date: string;
+  time: string;
 }
 
 export interface TodoSearchProps {
-    onSearch: (query: string) => void
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  value: string;
+}
+
+export interface TodosState {
+  todos: ITodo[];
 }
 
 export interface TodoSortProps {
-    sortTodosByName: () => void;
-    sortTodosByNameDescending: () => void;
-    sortTodosByTime: () => void;
-    sortTodosByTimeDescending: () => void;
-    handleCloseMenu: () => void;
-    activeSort: string;
+  sortByNameAscending: () => void;
+  sortByNameDescending: () => void;
+  sortByTimeAscending: () => void;
+  sortByTimeDescending: () => void;
+  handleCloseMenu: () => void;
+  activeSort: string;
 }
 
 export interface TodoOptionProps {
-    showAllTodos: () => void;
-    showCompletedTodos: () => void;
-    removeCompletedTodos: () => void;
-    handleRemoveAllTodos: () => void;
-    activeSort: string;
+  showAllTodos: () => void;
+  showCompletedTodos: () => void;
+  removeCompletedTodos: () => void;
+  removeAllTodos: () => void;
+  activeOptions: string;
 }

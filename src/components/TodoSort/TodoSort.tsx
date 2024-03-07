@@ -4,10 +4,10 @@ import './TodoSort.scss';
 
 const TodoSort: React.FC<TodoSortProps> = (props) => {
   const {
-    sortTodosByName,
-    sortTodosByNameDescending,
-    sortTodosByTime,
-    sortTodosByTimeDescending,
+    sortByNameAscending,
+    sortByNameDescending,
+    sortByTimeAscending,
+    sortByTimeDescending,
     handleCloseMenu,
     activeSort,
   } = props;
@@ -33,36 +33,36 @@ const TodoSort: React.FC<TodoSortProps> = (props) => {
     <div className='todo-sort' onClick={handleClick}>
       <button
         className={`todo-sort__btn ${
-          activeSort === 'name-ascending' ? 'todo-sort__btn_active' : ''
+          activeSort === 'name-asc' ? 'todo-sort__btn_active' : ''
         }`}
-        onClick={sortTodosByName}
+        onClick={sortByNameAscending}
       >
         name
         <div className='todo-sort__icon todo-sort__icon_name-ascending'></div>
       </button>
       <button
         className={`todo-sort__btn ${
-          activeSort === 'name-descending' ? 'todo-sort__btn_active' : ''
+          activeSort === 'name-desc' ? 'todo-sort__btn_active' : ''
         }`}
-        onClick={sortTodosByNameDescending}
+        onClick={sortByNameDescending}
       >
         name
         <div className='todo-sort__icon todo-sort__icon_name-descending'></div>
       </button>
       <button
         className={`todo-sort__btn ${
-          activeSort === 'time-ascending' ? 'todo-sort__btn_active' : ''
+          activeSort === 'time-asc' ? 'todo-sort__btn_active' : ''
         }`}
-        onClick={sortTodosByTime}
+        onClick={sortByTimeAscending}
       >
         time
         <div className='todo-sort__icon todo-sort__icon_time-ascending'></div>
       </button>
       <button
         className={`todo-sort__btn ${
-          activeSort === 'time-descending' ? 'todo-sort__btn_active' : ''
+          activeSort === 'time-desc' ? 'todo-sort__btn_active' : ''
         }`}
-        onClick={sortTodosByTimeDescending}
+        onClick={sortByTimeDescending}
       >
         time
         <div className='todo-sort__icon todo-sort__icon_time-descending'></div>
