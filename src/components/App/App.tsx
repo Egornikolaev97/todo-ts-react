@@ -64,11 +64,6 @@ const App: React.FC = () => {
     return matchesFilter && todo.title.toLowerCase().includes(searchQuery.toLowerCase());
   });
 
-  // const filteredAndSortedTodos = todos.filter(todo => {
-  //   if (filter === 'all') return true;
-  //   return filter === 'completed' ? todo.complete : !todo.complete;
-  // });
-
   const handleToggleTodo = (id: number) => {
     dispatch(toggleTodo(id));
   };
