@@ -9,9 +9,7 @@ if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <Provider store={store}>
-      {/* <React.StrictMode> */}
         <App />
-      {/* </React.StrictMode> */}
     </Provider>
   );
 }

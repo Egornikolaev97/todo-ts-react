@@ -27,19 +27,14 @@ const TodoItem: React.FC<ITodoItem> = (props) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const todoItemRef = useRef<HTMLInputElement | null>(null);
 
-  // Handle input change:
-  //Updates the state with the current value of the input field
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setEditText(e.target.value);
   };
 
-  // Enabling the edit form
   const handleEdit = () => {
     setIsEdit(true);
   };
 
-  // Handle saving edited text:
-  // Updates the todo if edited text is not empty and then exits edit mode
   const handleSaveEdit = () => {
     if (editText.trim() !== '') {
       editTodo(id, editText.trim());
@@ -47,8 +42,6 @@ const TodoItem: React.FC<ITodoItem> = (props) => {
     setIsEdit(false);
   };
 
-  // Saving the edit when the 'Enter' key is pressed
-  // and canceling the edit when the 'Esc' key is pressed
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleSaveEdit();
@@ -57,7 +50,7 @@ const TodoItem: React.FC<ITodoItem> = (props) => {
     }
   };
 
-  // Cancel editing mode when a click occurs outside the todo-item
+
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
@@ -76,7 +69,6 @@ const TodoItem: React.FC<ITodoItem> = (props) => {
     };
   }, [isEdit]);
 
-  // Setting the focus on input
   useEffect(() => {
     if (isEdit && inputRef.current) {
       inputRef.current.focus();
@@ -118,11 +110,6 @@ const TodoItem: React.FC<ITodoItem> = (props) => {
                   aria-label='delete'
                 ></div>
               </button>
-              {/* <button
-                className='todo-item__btn-drag'
-              >
-                <div className='todo-item__drag-icon' aria-label='drag'></div>
-              </button> */}
             </>
           ) : (
             <>
