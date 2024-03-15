@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+import { useState } from 'react';
 import { TodoList } from '../TodoList/TodoList';
 import { TodoSearch } from '../TodoSearch/TodoSearch';
 import { TodoSort } from '../TodoSort/TodoSort';
 import { TodoOptions } from '../TodoOptions/TodoOptions';
 import { ITodo, TodosState } from '../../types/data';
 import { formatDateTime } from '../../configs/formatDateTime';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, Provider } from 'react-redux';
 import { Dispatch } from 'redux';
-import { RootState } from '../../redux/store'
+import { RootState, store } from '../../redux/store';
+import { reorderTodoItems } from '../../redux/actions/todoActions';
 import {
   addTodo,
   removeTodo,
@@ -30,7 +32,9 @@ import { TodoActionTypes } from '../../types/actionTypes';
 const App: React.FC = () => {
   const dispatch: Dispatch<TodoActionTypes> = useDispatch();
 
-  const todos = useSelector((state: { todos: TodosState }) => state.todos.todos);
+  const todos = useSelector(
+    (state: { todos: TodosState }) => state.todos.todos
+  );
   const filter = useSelector((state: RootState) => state.todos.filter);
 
   const [showSortMenu, setShowSortMenu] = useState(false);
@@ -38,7 +42,6 @@ const App: React.FC = () => {
   const [activeOptions, setActiveOptions] = useState('show-all');
   const [value, setValue] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-
   const handleAddTodo = () => {
     if (value.trim()) {
       const { date, time } = formatDateTime();
@@ -55,13 +58,20 @@ const App: React.FC = () => {
     }
   };
 
-  const handleSearchChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+  const handleSearchChange: React.ChangeEventHandler<HTMLInputElement> = (
+    e
+  ) => {
     setSearchQuery(e.target.value);
   };
 
-  const filteredAndSortedTodos = todos.filter(todo => {
-    const matchesFilter = filter === 'all' || (filter === 'completed' ? todo.complete : !todo.complete);
-    return matchesFilter && todo.title.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredAndSortedTodos = todos.filter((todo) => {
+    const matchesFilter =
+      filter === 'all' ||
+      (filter === 'completed' ? todo.complete : !todo.complete);
+    return (
+      matchesFilter &&
+      todo.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
   });
 
   const handleToggleTodo = (id: number) => {
@@ -78,12 +88,12 @@ const App: React.FC = () => {
 
   const handleShowAll = () => {
     dispatch(showAllTodos());
-    setActiveOptions('show-all')
+    setActiveOptions('show-all');
   };
 
   const handleShowCompleted = () => {
     dispatch(showCompletedTodos());
-    setActiveOptions('show-completed')
+    setActiveOptions('show-completed');
   };
 
   const handleRemoveAllTodos = () => {
@@ -96,22 +106,22 @@ const App: React.FC = () => {
 
   const handleSortByNameAscendign = () => {
     dispatch(sortByNamesAscending());
-    setActiveSort('name-asc')
-  }
+    setActiveSort('name-asc');
+  };
 
   const handleSortByNameDescending = () => {
     dispatch(sortByNameDescending());
-    setActiveSort('name-desc')
+    setActiveSort('name-desc');
   };
 
   const handleSortByTimeAscendign = () => {
     dispatch(sortByTimeAscending());
-    setActiveSort('time-asc')
-  }
+    setActiveSort('time-asc');
+  };
 
   const handleSortByTimeDescending = () => {
     dispatch(sortByTimeDescending());
-    setActiveSort('time-desc')
+    setActiveSort('time-desc');
   };
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -132,58 +142,70 @@ const App: React.FC = () => {
     if (showSortMenu) setShowSortMenu(false);
   };
 
+  const onDragEnd = (result: DropResult) => {
+    const { destination, source } = result;
+    if (
+      !destination ||
+      (source.droppableId === destination.droppableId &&
+        source.index === destination.index)
+    ) {
+      return;
+    }
+    dispatch(reorderTodoItems(source.index, destination.index));
+  };
+
   return (
-    <div className='todo-app' onClick={handleCloseMenu}>
-      <div className='todo-app__container'>
-        <div className='todo-app__toolbar'>
-          <h1 className='todo-app__title'>Todo-list</h1>
-          <TodoSearch onChange={handleSearchChange} value={searchQuery}
-          />
-          <button className='todo-app__sort-btn' onClick={handleClickSort}>
-            <div className='todo-app__sort-icon'></div>
-          </button>
-          {showSortMenu && (
-            <TodoSort
-              handleCloseMenu={handleCloseMenu}
-              sortByNameAscending={handleSortByNameAscendign}
-              sortByNameDescending={handleSortByNameDescending}
-              sortByTimeAscending={handleSortByTimeAscendign}
-              sortByTimeDescending={handleSortByTimeDescending}
-              activeSort={activeSort}
+    <Provider store={store}>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <div className='todo-app' onClick={handleCloseMenu}>
+          <div className='todo-app__container'>
+            <div className='todo-app__toolbar'>
+              <h1 className='todo-app__title'>Todo-list</h1>
+              <TodoSearch onChange={handleSearchChange} value={searchQuery} />
+              <button className='todo-app__sort-btn' onClick={handleClickSort}>
+                <div className='todo-app__sort-icon'></div>
+              </button>
+              {showSortMenu && (
+                <TodoSort
+                  handleCloseMenu={handleCloseMenu}
+                  sortByNameAscending={handleSortByNameAscendign}
+                  sortByNameDescending={handleSortByNameDescending}
+                  sortByTimeAscending={handleSortByTimeAscendign}
+                  sortByTimeDescending={handleSortByTimeDescending}
+                  activeSort={activeSort}
+                />
+              )}
+            </div>
+            <div className='todo-app__add-task' onKeyDown={handleKeyDown}>
+              <button className='todo-app__add-btn' onClick={handleAddTodo}>
+                +
+              </button>
+              <input
+                className='todo-app__add-input'
+                type='text'
+                maxLength={30}
+                value={value}
+                onChange={handleChange}
+                placeholder='Add task!'
+              />
+            </div>
+            <TodoOptions
+              showAllTodos={handleShowAll}
+              showCompletedTodos={handleShowCompleted}
+              removeCompletedTodos={handleRemoveCompletedTodos}
+              removeAllTodos={handleRemoveAllTodos}
+              activeOptions={activeOptions}
             />
-          )}
+            <TodoList
+              items={filteredAndSortedTodos}
+              removeTodo={handleRemoveTodo}
+              editTodo={hadleEditTodo}
+              toggleTodo={handleToggleTodo}
+            />
+          </div>
         </div>
-        <div className='todo-app__add-task' onKeyDown={handleKeyDown}>
-          <button
-            className='todo-app__add-btn'
-            onClick={handleAddTodo}
-          >
-            +
-          </button>
-          <input
-            className='todo-app__add-input'
-            type='text'
-            maxLength={30}
-            value={value}
-            onChange={handleChange}
-            placeholder='Add task!'
-          />
-        </div>
-        <TodoOptions
-          showAllTodos={handleShowAll}
-          showCompletedTodos={handleShowCompleted}
-          removeCompletedTodos={handleRemoveCompletedTodos}
-          removeAllTodos={handleRemoveAllTodos}
-          activeOptions={activeOptions}
-        />
-        <TodoList
-          items={filteredAndSortedTodos}
-          removeTodo={handleRemoveTodo}
-          editTodo={hadleEditTodo}
-          toggleTodo={handleToggleTodo}
-        />
-      </div>
-    </div>
+      </DragDropContext>
+    </Provider>
   );
 };
 

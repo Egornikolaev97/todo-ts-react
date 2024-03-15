@@ -13,6 +13,7 @@ export const SHOW_ALL = 'SHOW_ALL';
 export const SHOW_COMPLETED = 'SHOW_COMPLETED';
 export const REMOVE_COMPLETED = 'REMOVE_COMPLETED';
 export const REMOVE_ALL = 'REMOVE_ALL';
+export const REORDER_TODO_ITEMS = 'REORDER_TODO_ITEMS';
 
 export interface AddTodoAction {
   type: typeof ADD_TODO;
@@ -79,6 +80,14 @@ export interface SortByTimeDescending {
   type: typeof SORT_BY_TIME_DESCENDING;
 }
 
+export interface ReorderTodoItemsAction {
+  type: typeof REORDER_TODO_ITEMS;
+  payload: {
+    startIndex: number;
+    endIndex: number;
+  };
+}
+
 export type TodoActionTypes =
   | AddTodoAction
   | RemoveTodoAction
@@ -93,5 +102,5 @@ export type TodoActionTypes =
   | SortByNameAscending
   | SortByNameDescending
   | SortByTimeAscending
-  | SortByTimeDescending;
-
+  | SortByTimeDescending
+  | ReorderTodoItemsAction;

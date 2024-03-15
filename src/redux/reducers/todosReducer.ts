@@ -12,6 +12,7 @@ import {
   SORT_BY_NAME_DESCENDING,
   SORT_BY_TIME_ASCENDING,
   SORT_BY_TIME_DESCENDING,
+  REORDER_TODO_ITEMS,
   TodoActionTypes,
 } from '../../types/actionTypes';
 import { ITodo } from '../../types/data';
@@ -61,6 +62,17 @@ const todoReducer = (
             : todo
         ),
       };
+      case REORDER_TODO_ITEMS: {
+        const { startIndex, endIndex } = action.payload;
+        const newTodos = Array.from(state.todos);
+        const [removed] = newTodos.splice(startIndex, 1);
+        newTodos.splice(endIndex, 0, removed);
+
+        return {
+          ...state,
+          todos: newTodos,
+        };
+      }
     case REMOVE_COMPLETED:
       return {
         ...state,

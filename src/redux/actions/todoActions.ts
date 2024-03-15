@@ -7,6 +7,7 @@ import {
   AddTodoAction,
   EditTodoAction,
   ToggleTodoAction,
+  ReorderTodoItemsAction,
 } from '../../types/actionTypes';
 import { ITodo } from '../../types/data';
 
@@ -28,4 +29,12 @@ export const editTodo = (id: number, newText: string): EditTodoAction => ({
 export const toggleTodo = (id: number): ToggleTodoAction => ({
   type: TOGGLE_TODO,
   payload: id,
-})
+});
+
+export const reorderTodoItems = (
+  startIndex: number,
+  endIndex: number
+): ReorderTodoItemsAction => ({
+  type: 'REORDER_TODO_ITEMS',
+  payload: { startIndex, endIndex },
+});
