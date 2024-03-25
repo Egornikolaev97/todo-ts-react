@@ -42,6 +42,7 @@ const App: React.FC = () => {
   const [activeOptions, setActiveOptions] = useState('show-all');
   const [value, setValue] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+
   const handleAddTodo = () => {
     if (value.trim()) {
       const { date, time } = formatDateTime();
