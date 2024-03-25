@@ -22,5 +22,12 @@
     &_active {
       border: 1px solid #64b2ff;
     }
+
+    @media (min-width: 320px) and (max-width: 460px) {
+      padding: 3px;
+      font-size: 12px;
+      height: 45px;
+      border: none;
+    }
   }
 }

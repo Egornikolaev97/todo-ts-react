@@ -29,7 +29,7 @@ const TodoOptions: React.FC<TodoOptionProps> = (props) => {
         show completed
       </button>
       <button className='todo-options__btn' onClick={removeCompletedTodos}>
-        clear Completed
+        clear completed
       </button>
       <button className='todo-options__btn' onClick={removeAllTodos}>
         Clear all
