@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/todo-ts-react/static/css/main.312bc948.css",
+    "main.js": "/todo-ts-react/static/js/main.53974d34.js",
+    "static/media/sort-icon.svg": "/todo-ts-react/static/media/sort-icon.95248dfba70f6fa7c9e7.svg",
+    "static/media/sort-up.svg": "/todo-ts-react/static/media/sort-up.8461e3e88dddf69519c4.svg",
+    "static/media/sort-down.svg": "/todo-ts-react/static/media/sort-down.86da07d90301aafa75d8.svg",
+    "index.html": "/todo-ts-react/index.html",
+    "static/media/search-icon.svg": "/todo-ts-react/static/media/search-icon.02f116aa6467326a65e0.svg",
+    "static/media/sort-down-time.svg": "/todo-ts-react/static/media/sort-down-time.98a7f66c24d1ed4e7f4d.svg",
+    "static/media/sort-up-time.svg": "/todo-ts-react/static/media/sort-up-time.5ad0457775cf7a714e80.svg",
+    "static/media/close-icon.svg": "/todo-ts-react/static/media/close-icon.f8cce9d8e61785e46719.svg",
+    "static/media/check-icon.svg": "/todo-ts-react/static/media/check-icon.05f8862cb34906df9d8a.svg",
+    "static/media/drag-icon.svg": "/todo-ts-react/static/media/drag-icon.f1323e00fa3ad9ad2813.svg",
+    "static/media/plus-icon.svg": "/todo-ts-react/static/media/plus-icon.6db58bc49073c0539acc.svg",
+    "main.312bc948.css.map": "/todo-ts-react/static/css/main.312bc948.css.map",
+    "main.53974d34.js.map": "/todo-ts-react/static/js/main.53974d34.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.312bc948.css",
+    "static/js/main.53974d34.js"
+  ]
+}
